@@ -1,4 +1,5 @@
 import type { ArchetypeProfile } from "../types/quiz";
+import { reachGoal } from "./metrika";
 
 const WIDTH = 1200;
 const HEIGHT = 1500;
@@ -166,6 +167,7 @@ function downloadImage(file: File) {
 
 // Отдельное скачивание PNG-карточки.
 export async function downloadResult(profile: ArchetypeProfile): Promise<void> {
+  reachGoal("result_download");
   const file = await createResultImage(profile);
   downloadImage(file);
 }
@@ -183,6 +185,7 @@ export async function shareResult(profile: ArchetypeProfile): Promise<ShareResul
         text: `Мой результат в тесте «Какой ты юрист?» — ${profile.name}. А какой ты юрист?`,
         files: [file],
       });
+      reachGoal("result_share");
       return "shared";
     } catch (error) {
       if (error instanceof DOMException && error.name === "AbortError") return "cancelled";

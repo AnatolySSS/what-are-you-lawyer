@@ -1,6 +1,7 @@
-import { useMemo, useState } from 'react';
-import { ARCHETYPE_ORDER, QUESTIONS } from '../data/questions';
-import type { Archetype, Scores } from '../types/quiz';
+import { useMemo, useState } from "react";
+import { ARCHETYPE_ORDER, QUESTIONS } from "../data/questions";
+import type { Archetype, Scores } from "../types/quiz";
+import { reachGoal } from "../utils/metrika";
 
 export function useQuiz() {
   const [started, setStarted] = useState(false);
@@ -16,13 +17,14 @@ export function useQuiz() {
   }, [answers]);
 
   const winner = ARCHETYPE_ORDER.reduce(
-    (best, archetype) => scores[archetype] > scores[best] ? archetype : best,
+    (best, archetype) => (scores[archetype] > scores[best] ? archetype : best),
     ARCHETYPE_ORDER[0],
   );
 
   const isFinished = answers.length === QUESTIONS.length;
 
   function start() {
+    reachGoal("quiz_start");
     setStarted(true);
   }
 

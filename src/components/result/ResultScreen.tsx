@@ -3,6 +3,7 @@ import type { ArchetypeProfile, Scores } from "../../types/quiz";
 import type { ShareResultStatus } from "../../utils/shareResult";
 import { ResultCard } from "./ResultCard";
 import { ScoreBreakdown } from "./ScoreBreakdown";
+import { reachGoal } from "../../utils/metrika";
 
 interface ResultScreenProps {
   profile: ArchetypeProfile;
@@ -25,6 +26,8 @@ export function ResultScreen({
   onDownload,
   onRestart,
 }: ResultScreenProps) {
+  reachGoal("quiz_complete");
+
   return (
     <section className="result">
       <div className="eyebrow">
