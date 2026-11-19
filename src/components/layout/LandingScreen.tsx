@@ -1,4 +1,4 @@
-import { ArrowRight, Scale, Sparkles } from 'lucide-react';
+import { ArrowRight, Scale, Sparkles } from "lucide-react";
 
 interface LandingScreenProps {
   onStart: () => void;
@@ -7,12 +7,20 @@ interface LandingScreenProps {
 export function LandingScreen({ onStart }: LandingScreenProps) {
   return (
     <section className="hero">
-      <div className="eyebrow"><Sparkles size={14} /> ЮРИДИЧЕСКИЙ ХАРАКТЕР</div>
-      <div className="seal"><Scale size={52} /></div>
-      <h1>Какой ты<br /><em>юрист?</em></h1>
+      <div className="eyebrow">
+        <Sparkles size={14} /> ЮРИДИЧЕСКИЙ ХАРАКТЕР
+      </div>
+      <div className="seal">
+        <Scale size={52} />
+      </div>
+      <h1>
+        Какой ты
+        <br />
+        <em>юрист?</em>
+      </h1>
       <p className="lead">
-        За каждым сильным юристом стоит свой стиль мышления. Узнай, кто ты в мире права:
-        защитник, стратег, переговорщик, детектив или судья.
+        За каждым сильным юристом стоит свой стиль мышления. Узнай, кто ты в мире права: защитник, стратег,
+        переговорщик, детектив или судья.
       </p>
       <div className="meta">
         <span>● 8 ситуационных вопросов</span>
