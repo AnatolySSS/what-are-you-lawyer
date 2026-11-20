@@ -1,5 +1,6 @@
 import type { ArchetypeProfile } from "../types/quiz";
 import { reachGoal } from "./metrika";
+import { renderToStaticMarkup } from "react-dom/server";
 
 const WIDTH = 1200;
 const HEIGHT = 1500;
@@ -55,6 +56,37 @@ function drawSection(ctx: CanvasRenderingContext2D, label: string, text: string,
   drawWrappedText(ctx, text, x, y + 43, 890, 36, 3);
 }
 
+async function drawProfileIcon(
+  ctx: CanvasRenderingContext2D,
+  profile: ArchetypeProfile,
+  x: number,
+  y: number,
+  size: number,
+): Promise<void> {
+  const svg = renderToStaticMarkup(profile.icon).replace(/currentColor/g, profile.color);
+
+  const blob = new Blob([svg], {
+    type: "image/svg+xml;charset=utf-8",
+  });
+
+  const url = URL.createObjectURL(blob);
+
+  try {
+    const image = new Image();
+
+    await new Promise<void>((resolve, reject) => {
+      image.onload = () => resolve();
+      image.onerror = () => reject(new Error("Не удалось загрузить иконку"));
+
+      image.src = url;
+    });
+
+    ctx.drawImage(image, x, y, size, size);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 async function createResultImage(profile: ArchetypeProfile): Promise<File> {
   await document.fonts?.ready;
 
@@ -94,9 +126,7 @@ async function createResultImage(profile: ArchetypeProfile): Promise<File> {
   ctx.strokeStyle = profile.color;
   ctx.lineWidth = 2;
   ctx.stroke();
-  ctx.fillStyle = profile.color;
-  ctx.font = "64px Arial, sans-serif";
-  ctx.fillText("§", WIDTH / 2, 307);
+  await drawProfileIcon(ctx, profile, WIDTH / 2 - 40, 245, 80);
 
   ctx.fillStyle = profile.color;
   ctx.font = "700 22px Arial, sans-serif";
