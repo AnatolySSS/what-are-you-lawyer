@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react";
 import { Download, Share2, RotateCcw, Sparkles } from "lucide-react";
 import type { ArchetypeProfile, Scores } from "../../types/quiz";
 import type { ShareResultStatus } from "../../utils/shareResult";
@@ -26,7 +27,14 @@ export function ResultScreen({
   onDownload,
   onRestart,
 }: ResultScreenProps) {
-  reachGoal("quiz_complete");
+  const goalSent = useRef(false);
+
+  useEffect(() => {
+    if (goalSent.current) return;
+
+    goalSent.current = true;
+    reachGoal("quiz_complete");
+  }, []);
 
   return (
     <section className="result">
